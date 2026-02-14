@@ -1,0 +1,41 @@
+#!/usr/bin/env bpftrace
+/*
+ * runqlat.bt - CPU run-queue latency histogram (bpftrace prototype)
+ *
+ * Measures the time a task spends waiting on the CPU run queue between
+ * being woken up (or preempted) and actually getting scheduled.
+ *
+ * Usage: sudo bpftrace scripts/runqlat.bt
+ */
+
+tracepoint:sched:sched_wakeup
+{
+	@start[args->pid] = nsecs;
+}
+
+tracepoint:sched:sched_wakeup_new
+{
+	@start[args->pid] = nsecs;
+}
+
+tracepoint:sched:sched_switch
+{
+	// If the previous task was preempted (still TASK_RUNNING),
+	// record its enqueue time — it goes back on the run queue.
+	if (args->prev_state == 0) {
+		@start[args->prev_pid] = nsecs;
+	}
+
+	// When the next task starts running, compute its run-queue wait time.
+	$ts = @start[args->next_pid];
+	if ($ts) {
+		$delta = nsecs - $ts;
+		@usecs = hist($delta / 1000);
+		delete(@start[args->next_pid]);
+	}
+}
+
+interval:s:99999
+{
+	clear(@start);
+}

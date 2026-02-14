@@ -1,0 +1,2 @@
+_start;__libc_start_main;main;run_workload;compute_cold 20
+_start;__libc_start_main;main;run_workload;compute_hot 138

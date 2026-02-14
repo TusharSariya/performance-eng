@@ -1,0 +1,79 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="172" viewBox="0 0 1200 172">
+<rect width="100%" height="100%" fill="#f8f8f8" />
+<text x="600" y="20" font-size="16" font-family="sans-serif" text-anchor="middle" fill="#333">Self-Profile</text>
+<text x="600" y="36" font-size="11" font-family="sans-serif" text-anchor="middle" fill="#888">163 samples. Ctrl+F to search, Esc to reset.</text>
+<text id="details" x="4" y="166" font-size="11" font-family="monospace" fill="#333"></text>
+<g>
+<title>root (163 samples, 100.0%)</title>
+<rect x="10.0" y="126.0" width="1180.0" height="15" fill="rgb(200,200,200)" rx="1" ry="1" class="frame" />
+<text x="13.0" y="138.0" font-size="11" font-family="monospace" fill="#000">root</text>
+</g>
+<g>
+<title>_start (163 samples, 100.0%)</title>
+<rect x="10.0" y="110.0" width="1180.0" height="15" fill="rgb(219,122,40)" rx="1" ry="1" class="frame" />
+<text x="13.0" y="122.0" font-size="11" font-family="monospace" fill="#000">_start</text>
+</g>
+<g>
+<title>__libc_start_main (163 samples, 100.0%)</title>
+<rect x="10.0" y="94.0" width="1180.0" height="15" fill="rgb(237,172,49)" rx="1" ry="1" class="frame" />
+<text x="13.0" y="106.0" font-size="11" font-family="monospace" fill="#000">__libc_start_main</text>
+</g>
+<g>
+<title>main (163 samples, 100.0%)</title>
+<rect x="10.0" y="78.0" width="1180.0" height="15" fill="rgb(234,121,48)" rx="1" ry="1" class="frame" />
+<text x="13.0" y="90.0" font-size="11" font-family="monospace" fill="#000">main</text>
+</g>
+<g>
+<title>run_workload (163 samples, 100.0%)</title>
+<rect x="10.0" y="62.0" width="1180.0" height="15" fill="rgb(237,91,38)" rx="1" ry="1" class="frame" />
+<text x="13.0" y="74.0" font-size="11" font-family="monospace" fill="#000">run_workload</text>
+</g>
+<g>
+<title>compute_cold (22 samples, 13.5%)</title>
+<rect x="10.0" y="46.0" width="159.3" height="15" fill="rgb(245,157,46)" rx="1" ry="1" class="frame" />
+<text x="13.0" y="58.0" font-size="11" font-family="monospace" fill="#000">compute_cold</text>
+</g>
+<g>
+<title>compute_hot (141 samples, 86.5%)</title>
+<rect x="169.3" y="46.0" width="1020.7" height="15" fill="rgb(247,183,42)" rx="1" ry="1" class="frame" />
+<text x="172.3" y="58.0" font-size="11" font-family="monospace" fill="#000">compute_hot</text>
+</g>
+  <script type="text/javascript">
+  <![CDATA[
+    var frames = document.querySelectorAll('.frame');
+    var details = document.getElementById('details');
+    var searchInput = null;
+    frames.forEach(function(f) {
+      f.style.cursor = 'pointer';
+      f.addEventListener('mouseover', function() {
+        f.style.stroke = '#000'; f.style.strokeWidth = '0.5';
+        var t = f.parentNode.querySelector('title');
+        if (t && details) details.textContent = t.textContent;
+      });
+      f.addEventListener('mouseout', function() {
+        f.style.stroke = 'none';
+        if (details) details.textContent = '';
+      });
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'f') {
+        e.preventDefault();
+        var term = prompt('Search function name:');
+        if (!term) { frames.forEach(function(f){f.style.opacity='1';}); return; }
+        term = term.toLowerCase();
+        frames.forEach(function(f) {
+          var t = f.parentNode.querySelector('title');
+          if (t && t.textContent.toLowerCase().indexOf(term) >= 0)
+            f.style.opacity = '1';
+          else
+            f.style.opacity = '0.3';
+        });
+      }
+      if (e.key === 'Escape') {
+        frames.forEach(function(f){f.style.opacity='1';});
+      }
+    });
+  ]]>
+  </script>
+</svg>
